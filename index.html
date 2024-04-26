@@ -10,30 +10,26 @@
     <h1>Red-Black Trees</h1>
 
     <div id="container1">
-        <button class="btn">Insert</button>
-        <button class="btn">Delete</button>
-        <button class="btn">Find</button>
+        <input id="ins-inp" type="text" class="inp">
+        <button class="btn" onclick="Insert()">Insert</button>
+
+        <input id="del-inp" type="text" class="inp">
+        <button class="btn" onclick="Delete()">Delete</button>
+
+        <input id="find-inp" type="text" class="inp">
+        <button class="btn" onclick="Find()">Find</button>
     </div>
     
 
-    <div id="container2">
-        <div id="lev1" class="level">
-            <div class="node">1</div>
-        </div>
-    </div>
-    <script>
-        // Create a new div element
-        var newDiv = document.createElement("div");
+    <div id="container2"></div>
 
-        // Set attributes or properties of the new div
-        newDiv.classList.add("node");
-        newDiv.textContent = "45";
-        //newDiv.style.position = "absolute";
-
-        // Append the new div to the body of the document
-        var level = document.getElementById("lev1");
-        level.appendChild(newDiv);
-    </script>
+    
     <script src="script.js"></script>
+    <script src="red-black-tree.js"></script>
+
+    <script>
+        
+        
+    </script>
 </body>
 </html>

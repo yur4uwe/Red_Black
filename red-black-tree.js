@@ -136,27 +136,75 @@ class RedBlackTree {
 
     Print()
     {
+        var container = document.getElementById("container2");
+        
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+
         let q = [this.root];
 
         while(q.length > 0)
         {
             let size = q.length;
+            var newLevel = document.createElement("div")
+            newLevel.classList.add("level");
+
+            container.appendChild(newLevel);
+
             for(let i = 0; i < size; i++)
             {
                 let currNode = q[0];
-                console.log(currNode);
+                
+                var newDiv = document.createElement("div");
+                
+                newDiv.textContent = currNode.val;
+                if(!currNode.color)
+                    newDiv.style.background = "black";
+                else
+                    newDiv.style.background = "red";
+
+                newDiv.classList.add("node");
+
+                newLevel.appendChild(newDiv);
+
                 if(currNode.left) q.push(currNode.left);
                 if(currNode.right) q.push(currNode.right);
                 q.shift()
             }
-            console.log();
         }
     }
 }
 
-let tree = new RedBlackTree(5);
-
-tree.Insert(1);
-tree.Insert(10);
+let tree = new RedBlackTree();
 
 tree.Print();
+
+function Insert() {
+    // Get the input value from the input field
+    let inputValue = document.getElementById("ins-inp").value;
+    
+    // Call the Insert function with the input value
+    tree.Insert(inputValue);
+
+    tree.Print();
+}
+
+function Delete() {
+    // Get the input value from the input field
+    let inputValue = document.getElementById("del-inp").value;
+    
+    // Call the Delete function with the input value
+    tree.Delete(inputValue);
+
+    tree.Print();
+}
+
+function Find() {
+    // Get the input value from the input field
+    let inputValue = document.getElementById("find-inp").value;
+    
+    // Call the Find function with the input value
+    tree.Find(inputValue);
+}
+
