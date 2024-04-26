@@ -17,23 +17,23 @@
     
 
     <div id="container2">
-        <div class="level">
+        <div id="lev1" class="level">
             <div class="node">1</div>
         </div>
-
-        <div class="level">
-            <div class="node">2</div>
-            <div class="node">3</div>
-        </div>
-
-        <div class="level">
-            <div class="node">4</div>
-            <div class="node">5</div>
-            <div class="node">6</div>
-            <div class="node">7</div>
-        </div>
     </div>
+    <script>
+        // Create a new div element
+        var newDiv = document.createElement("div");
 
+        // Set attributes or properties of the new div
+        newDiv.classList.add("node");
+        newDiv.textContent = "45";
+        //newDiv.style.position = "absolute";
+
+        // Append the new div to the body of the document
+        var level = document.getElementById("lev1");
+        level.appendChild(newDiv);
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
