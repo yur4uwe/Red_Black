@@ -2,12 +2,13 @@ const RED = false;
 const BLACK = true;
 
 class TreeNode {
-    constructor(val = 0, left = null, right = null, parent = null, color = BLACK) {
+    constructor(val = 0, left = null, right = null, parent = null,id = "", color = BLACK) {
         this.val = val;
         this.left = left;
         this.right = right;
         this.parent = parent;
         this.color = color;
+        this.id = id;
     }
 }
 
