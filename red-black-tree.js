@@ -18,42 +18,54 @@ class RedBlackTree {
 
     Insert(value) {
         if (this.Find(value)) {
-            return;
+            return; // Node already exists
         }
-
+    
         let newNode = new TreeNode(value, null, null, null, RED);
-
+    
         if (!this.root) {
             newNode.color = BLACK;
             this.root = newNode;
             return;
         }
-
+    
         let currNode = this.root;
         let parent = null;
-
+    
         while (currNode) {
             parent = currNode;
-            if (currNode.val < value) {
+            if (value < currNode.val) {
                 currNode = currNode.left;
-            } else if (currNode.val > value) {
+            } else if (value > currNode.val) {
                 currNode = currNode.right;
+            } else {
+                // Value already exists in the tree
+                return;
             }
         }
-
+    
+        // Now currNode is null, and parent is the parent of the new node
         if (value < parent.val) {
             parent.left = newNode;
         } else {
             parent.right = newNode;
         }
-
+    
         newNode.parent = parent;
-
+    
         this.Recoloring(newNode);
     }
+    
 
     Recoloring(node) {
         // If the parent of the node is black, no need to recolor
+        if(node === this.root)
+        {
+            node.color = BLACK;
+            return;
+        }
+            
+        
         if (!node.parent || node.parent.color === BLACK) {
             return;
         }
@@ -121,4 +133,30 @@ class RedBlackTree {
 
         return currNode;
     }
+
+    Print()
+    {
+        let q = [this.root];
+
+        while(q.length > 0)
+        {
+            let size = q.length;
+            for(let i = 0; i < size; i++)
+            {
+                let currNode = q[0];
+                console.log(currNode);
+                if(currNode.left) q.push(currNode.left);
+                if(currNode.right) q.push(currNode.right);
+                q.shift()
+            }
+            console.log();
+        }
+    }
 }
+
+let tree = new RedBlackTree(5);
+
+tree.Insert(1);
+tree.Insert(10);
+
+tree.Print();
