@@ -1,5 +1,5 @@
-const RED = false;
-const BLACK = true;
+const RED = true;
+const BLACK = false;
 
 class TreeNode {
     constructor(val = 0, left = null, right = null, parent = null,id = "", color = BLACK) {
@@ -13,8 +13,8 @@ class TreeNode {
 }
 
 class RedBlackTree {
-    constructor(val, left, right, parent, color) {
-        this.root = new TreeNode(val, left, right, parent, color);
+    constructor() {
+        this.root = null;
     }
 
     Insert(value) {
@@ -153,26 +153,27 @@ class RedBlackTree {
 
             container.appendChild(newLevel);
 
-            for(let i = 0; i < size; i++)
+            for (let i = 0; i < size; i++) 
             {
                 let currNode = q[0];
                 
                 var newDiv = document.createElement("div");
                 
                 newDiv.textContent = currNode.val;
-                if(!currNode.color)
-                    newDiv.style.background = "black";
+                if (!currNode.color)
+                    newDiv.style.background = "black"; // Set color for black nodes
                 else
-                    newDiv.style.background = "red";
-
+                    newDiv.style.background = "red"; // Set color for red nodes
+            
                 newDiv.classList.add("node");
-
+            
                 newLevel.appendChild(newDiv);
-
-                if(currNode.left) q.push(currNode.left);
-                if(currNode.right) q.push(currNode.right);
+            
+                if (currNode.left) q.push(currNode.left);
+                if (currNode.right) q.push(currNode.right);
                 q.shift()
             }
+            
         }
     }
 }
@@ -184,12 +185,20 @@ tree.Print();
 function Insert() {
     // Get the input value from the input field
     let inputValue = document.getElementById("ins-inp").value;
+
+    // Check if the input is empty or not a number
+    if (inputValue === "" || isNaN(inputValue)) {
+        // Display an error message or handle the invalid input
+        console.error("Invalid input. Please enter a valid number.");
+        return;
+    }
     
     // Call the Insert function with the input value
-    tree.Insert(inputValue);
+    tree.Insert(parseInt(inputValue)); // Convert input value to integer before insertion
 
     tree.Print();
 }
+
 
 function Delete() {
     // Get the input value from the input field
