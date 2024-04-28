@@ -1,5 +1,6 @@
 const RED = true;
 const BLACK = false;
+let lastID = 0;
 
 class TreeNode {
     constructor(val = 0, left = null, right = null, parent = null,id = "", color = BLACK) {
@@ -22,11 +23,14 @@ class RedBlackTree {
             return; // Node already exists
         }
     
-        let newNode = new TreeNode(value, null, null, null, RED);
-    
+        let newNode = new TreeNode(value, null, null, null, `node${lastID++}`, RED);
+
         if (!this.root) {
             newNode.color = BLACK;
             this.root = newNode;
+
+
+
             return;
         }
     
@@ -116,7 +120,21 @@ class RedBlackTree {
     }
 
     Delete(value) {
-        // Deletion logic goes here
+        let currNode = this.root;
+
+        while (currNode && currNode.val !== value) {
+            if (currNode.val < value) {
+                currNode = currNode.left;
+            } else if (currNode.val > value) {
+                currNode = currNode.right;
+            } else {
+                return currNode;
+            }
+        }
+
+        if (!currNode) {
+            this.giveResponse("Node not found");
+        }        
     }
 
     Find(value) {
@@ -132,7 +150,11 @@ class RedBlackTree {
             }
         }
 
-        return currNode;
+        if (!currNode) {
+            this.giveResponse("Node not found");
+        }  
+        else
+            return currNode;
     }
 
     Print()
@@ -142,6 +164,9 @@ class RedBlackTree {
         while (container.firstChild) {
             container.removeChild(container.firstChild);
         }
+
+        if(!this.root)
+            return;
 
         let q = [this.root];
 
@@ -176,11 +201,29 @@ class RedBlackTree {
             
         }
     }
+
+    AddOnDoc(node)
+    {
+        var container = document.getElementById("container2");
+    }
+
+    giveResponse(message)
+    {
+        
+
+        let output = document.getElementById("response");
+        
+        output.textContent = message; // Use '=' instead of '()' to set text content
+        
+        setTimeout(() => {
+            output.textContent = ""; // Reset text content after 3000 milliseconds
+        }, 3000);
+    }
 }
 
 let tree = new RedBlackTree();
 
-tree.Print();
+//tree.Print();
 
 function Insert() {
     // Get the input value from the input field
@@ -196,7 +239,7 @@ function Insert() {
     // Call the Insert function with the input value
     tree.Insert(parseInt(inputValue)); // Convert input value to integer before insertion
 
-    tree.Print();
+    //tree.Print();
 }
 
 
@@ -207,7 +250,7 @@ function Delete() {
     // Call the Delete function with the input value
     tree.Delete(inputValue);
 
-    tree.Print();
+    //tree.Print();
 }
 
 function Find() {

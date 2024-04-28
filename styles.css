@@ -20,6 +20,7 @@ body {
 .node:hover {
     width: 70px;
     height: 70px;
+    
 }
 
 .level {
@@ -74,4 +75,26 @@ body {
     border-radius: 13px;
     font-size: 20px;
     margin-left: 3px;
+}
+
+#container {
+    position: relative;
+}
+  
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: lightblue;
+    margin: 20px;
+}
+  
+#line {
+    position: absolute;
+    border: 2px solid red;
+    z-index: 10;
+}
+ 
+canvas{
+    width: max-content;
+    height: 500px;
 }
