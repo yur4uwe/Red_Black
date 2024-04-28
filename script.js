@@ -10,7 +10,7 @@ canvas.height = 400 * scaleFactor;
 ctx.scale(scaleFactor, scaleFactor);
 
 // Draw on the canvas
-ctx.beginPath();
+/*ctx.beginPath();
 ctx.moveTo(0, 0);
 ctx.lineTo(50, 50);
 ctx.lineWidth = 2;
@@ -23,7 +23,7 @@ ctx.fillStyle = "red";
 ctx.fill();
 ctx.lineWidth = 2;
 ctx.strokeStyle = "black";
-ctx.stroke();
+ctx.stroke();*/
 
 //ctx.beginPath();
 //ctx.moveTo(canvas.height / 2, 0);

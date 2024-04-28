@@ -395,41 +395,34 @@ class RedBlackTree {
 
 let tree = new RedBlackTree();
 
-//tree.Print();
-
-function Insert() {
-    // Get the input value from the input field
+function Insert() 
+{
     let inputValue = document.getElementById("ins-inp").value;
 
-    // Check if the input is empty or not a number
     if (inputValue === "" || isNaN(inputValue)) {
-        // Display an error message or handle the invalid input
         tree.giveResponse("Invalid input. Please enter a valid number.");
         return;
     }
     
-    // Call the Insert function with the input value
-    tree.Insert(parseInt(inputValue)); // Convert input value to integer before insertion
+    tree.Insert(parseInt(inputValue));
 
     tree.Print();
 }
 
 
-function Delete() {
-    // Get the input value from the input field
+function Delete() 
+{
     let inputValue = document.getElementById("del-inp").value;
-    
-    // Call the Delete function with the input value
+
     tree.Delete(inputValue);
 
     tree.Print();
 }
 
-function Find() {
-    // Get the input value from the input field
+function Find() 
+{
     let inputValue = document.getElementById("find-inp").value;
     
-    // Call the Find function with the input value
     tree.Find(inputValue);
 }
 
