@@ -25,8 +25,8 @@ ctx.lineWidth = 2;
 ctx.strokeStyle = "black";
 ctx.stroke();
 
-ctx.beginPath();
-ctx.moveTo(canvas.height / 2, 0);
-ctx.lineTo(canvas.height / 2, 100);
-ctx.lineWidth = 2;
-ctx.stroke();
+//ctx.beginPath();
+//ctx.moveTo(canvas.height / 2, 0);
+//ctx.lineTo(canvas.height / 2, 100);
+//ctx.lineWidth = 2;
+//ctx.stroke();

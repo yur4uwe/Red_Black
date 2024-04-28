@@ -1,125 +1,24 @@
 const RED = true;
 const BLACK = false;
-let lastID = 0;
 
-class TreeNode {
-    constructor(val = 0, left = null, right = null, parent = null,id = "", color = BLACK) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-        this.parent = parent;
-        this.color = color;
-        this.id = id;
+class Node {
+    constructor(data, color) {
+        this.data = data;
+        this.parent = null;
+        this.left = null;
+        this.right = null;
+        this.color = color; // 0 for black, 1 for red
     }
 }
 
 class RedBlackTree {
-    constructor() {
-        this.root = null;
+    constructor() 
+    {
+        this.NULLNODE = new Node(0, 0);
+        this.root = this.NULLNODE;
     }
 
-    Insert(value) {
-        if (this.Find(value)) {
-            return; // Node already exists
-        }
-    
-        let newNode = new TreeNode(value, null, null, null, `node${lastID++}`, RED);
-
-        if (!this.root) {
-            newNode.color = BLACK;
-            this.root = newNode;
-
-
-
-            return;
-        }
-    
-        let currNode = this.root;
-        let parent = null;
-    
-        while (currNode) {
-            parent = currNode;
-            if (value < currNode.val) {
-                currNode = currNode.left;
-            } else if (value > currNode.val) {
-                currNode = currNode.right;
-            } else {
-                // Value already exists in the tree
-                return;
-            }
-        }
-    
-        // Now currNode is null, and parent is the parent of the new node
-        if (value < parent.val) {
-            parent.left = newNode;
-        } else {
-            parent.right = newNode;
-        }
-    
-        newNode.parent = parent;
-    
-        this.Recoloring(newNode);
-    }
-    
-
-    Recoloring(node) {
-        // If the parent of the node is black, no need to recolor
-        if(node === this.root)
-        {
-            node.color = BLACK;
-            return;
-        }
-            
-        
-        if (!node.parent || node.parent.color === BLACK) {
-            return;
-        }
-    
-        let grandparent = node.parent.parent;
-        let uncle = (node.parent === grandparent.left) ? grandparent.right : grandparent.left;
-    
-        if (!uncle || uncle.color === BLACK) {
-            // Case: Uncle is black or null
-            if (node.parent === grandparent.left) {
-                if (node === node.parent.right) {
-                    // Double rotation (left-right)
-                    this.RotateLeft(node.parent);
-                    node = node.left;
-                }
-                // Single rotation (right)
-                this.RotateRight(grandparent);
-            } else {
-                if (node === node.parent.left) {
-                    // Double rotation (right-left)
-                    this.RotateRight(node.parent);
-                    node = node.right;
-                }
-                // Single rotation (left)
-                this.RotateLeft(grandparent);
-            }
-            // Swap colors of parent and grandparent
-            node.parent.color = BLACK;
-            grandparent.color = RED;
-        } else {
-            // Case: Uncle is red
-            node.parent.color = BLACK;
-            uncle.color = BLACK;
-            grandparent.color = RED;
-            // Recursively fix violations for grandparent
-            this.Recoloring(grandparent);
-        }
-    }
-    
-
-    RotateLeft() {
-        // Rotation logic goes here
-    }
-
-    RotateRight() {
-        // Rotation logic goes here
-    }
-
-    Delete(value) {
+    FindHelper(value) {
         let currNode = this.root;
 
         while (currNode && currNode.val !== value) {
@@ -132,39 +31,314 @@ class RedBlackTree {
             }
         }
 
-        if (!currNode) {
-            this.giveResponse("Node not found");
-        }        
+        return currNode;
     }
 
-    Find(value) {
-        let currNode = this.root;
-
-        while (currNode && currNode.val !== value) {
-            if (currNode.val < value) {
-                currNode = currNode.left;
-            } else if (currNode.val > value) {
-                currNode = currNode.right;
-            } else {
-                return currNode;
-            }
-        }
-
-        if (!currNode) {
-            this.giveResponse("Node not found");
-        }  
+    Find(value)
+    {
+        if(this.FindHelper(value))
+            return this.giveResponse(`Node with value ${value} found`);
         else
-            return currNode;
+            return this.giveResponse(`Node with value ${value} not found`);
+    }
+
+    leftRotate(node) 
+    {
+        let y = node.right;
+        node.right = y.left;
+
+        if (y.left !== null) 
+        {
+            y.left.parent = node;
+        }
+
+        y.parent = node.parent;
+        if (node.parent === null) {
+            this.root = y;
+        } 
+        else if (node === node.parent.left) {
+            node.parent.left = y;
+        } 
+        else {
+            node.parent.right = y;
+        }
+
+        y.left = node;
+        node.parent = y;
+    }
+
+    rightRotate(x) 
+    {
+        let y = x.left;
+        x.left = y.right;
+
+        if (y.right !== null) 
+            y.right.parent = x;
+
+        y.parent = x.parent;
+        if (x.parent === null) 
+            this.root = y;
+        else if (x === x.parent.right) 
+            x.parent.right = y;
+        else 
+            x.parent.left = y;
+        
+        y.right = x;
+        x.parent = y;
+    }   
+
+    rbTransplant(u, v) 
+    {
+        if (u.parent === null) {
+            this.root = v;
+        } 
+        else if (u === u.parent.left) {
+            u.parent.left = v;
+        } 
+        else {
+            u.parent.right = v;
+        }
+        v.parent = u.parent;
+    }
+
+    Delete(key) 
+    {
+        let z = null;
+        let x, y;
+        let node = this.root;
+
+        while (node !== null) 
+        {
+            if (node.data === key) {
+                z = node;
+            }
+
+            if (node.data <= key) {
+                node = node.right;
+            } 
+            else {
+                node = node.left;
+            }
+        }
+
+        if (z === null) 
+        {
+            this.giveResponse("Key not found in the tree");
+            return;
+        }
+
+        y = z;
+        let y_original_color = y.color;
+        if (z.left === null) 
+        {
+            x = z.right;
+            this.rbTransplant(z, z.right);
+        } 
+        else if (z.right === null) 
+        {
+            x = z.left;
+            this.rbTransplant(z, z.left);
+        } 
+        else 
+        {
+            y = this.minimum(z.right);
+            y_original_color = y.color;
+            x = y.right;
+            if (y.parent === z) 
+            {
+                x.parent = y;
+            }
+            else 
+            {
+                this.rbTransplant(y, y.right);
+                y.right = z.right;
+                y.right.parent = y;
+            }
+
+            this.rbTransplant(z, y);
+            y.left = z.left;
+            y.left.parent = y;
+            y.color = z.color;
+        }
+
+        if (y_original_color === 0) {
+            this.deleteFix(x);
+        }
+    }
+
+    minimum(node) {
+        while (node.left !== null) {
+            node = node.left;
+        }
+        return node;
+    }
+
+    deleteFix(x) 
+    {
+        let s;
+        while (x !== this.root && x.color === 0) 
+        {
+            if (x === x.parent.left) 
+            {
+                s = x.parent.right;
+                if (s.color === 1) 
+                {
+                    s.color = 0;
+                    x.parent.color = 1;
+                    this.leftRotate(x.parent);
+                    s = x.parent.right;
+                }
+
+                if (s.left.color === 0 && s.right.color === 0) 
+                {
+                    s.color = 1;
+                    x = x.parent;
+                } 
+                else 
+                {
+                    if (s.right.color === 0) 
+                    {
+                        s.left.color = 0;
+                        s.color = 1;
+                        this.rightRotate(s);
+                        s = x.parent.right;
+                    }
+
+                    s.color = x.parent.color;
+                    x.parent.color = 0;
+                    s.right.color = 0;
+                    this.leftRotate(x.parent);
+                    x = this.root;
+                }
+            } 
+            else 
+            {
+                s = x.parent.left;
+                if (s.color === 1) 
+                {
+                    s.color = 0;
+                    x.parent.color = 1;
+                    this.rightRotate(x.parent);
+                    s = x.parent.left;
+                }
+
+                if (s.right.color === 0 && s.right.color === 0)
+                {
+                    s.color = 1;
+                    x = x.parent;
+                } 
+                else
+                {
+                    if (s.left.color === 0)
+                    {
+                        s.right.color = 0;
+                        s.color = 1;
+                        this.leftRotate(s);
+                        s = x.parent.left;
+                    }
+
+                    s.color = x.parent.color;
+                    x.parent.color = 0;
+                    s.left.color = 0;
+                    this.rightRotate(x.parent);
+                    x = this.root;
+                }
+            }
+        }
+        x.color = 0;
+    }
+
+    Insert(key) 
+    {
+        let node = new Node(key, 1);
+        let y = null;
+        let x = this.root;
+
+        while (x !== this.NULLNODE && x !== null) {
+            y = x;
+            if (node.data < x.data) {
+                x = x.left;
+            } else {
+                x = x.right;
+            }
+        }
+
+        node.parent = y;
+        if (y === null) {
+            this.root = node;
+        } else if (node.data < y.data) {
+            y.left = node;
+        } else {
+            y.right = node;
+        }
+
+        if (node.parent === null) {
+            node.color = 0;
+            return;
+        }
+
+        if (node.parent.parent === null) {
+            return;
+        }
+
+        this.insertFix(node);
+    }
+
+    insertFix(k) {
+        let u;
+    
+        while (k.parent && k.parent.color === 1) {
+            if (k.parent === k.parent.parent.right) {
+                u = k.parent.parent.left;
+    
+                if (u && u.color === 1) {
+                    u.color = 0;
+                    k.parent.color = 0;
+                    k.parent.parent.color = 1;
+                    k = k.parent.parent;
+                } else {
+                    if (k === k.parent.left) {
+                        k = k.parent;
+                        this.rightRotate(k);
+                    }
+                    k.parent.color = 0;
+                    k.parent.parent.color = 1;
+                    this.leftRotate(k.parent.parent);
+                }
+            } else {
+                u = k.parent.parent.right;
+    
+                if (u && u.color === 1) {
+                    u.color = 0;
+                    k.parent.color = 0;
+                    k.parent.parent.color = 1;
+                    k = k.parent.parent;
+                } else {
+                    if (k === k.parent.right) {
+                        k = k.parent;
+                        this.leftRotate(k);
+                    }
+                    k.parent.color = 0;
+                    k.parent.parent.color = 1;
+                    this.rightRotate(k.parent.parent);
+                }
+            }
+            if (k === this.root) {
+                break;
+            }
+        }
+        this.root.color = 0;
     }
 
     Print()
-    {
-        var container = document.getElementById("container2");
-        
-        while (container.firstChild) {
-            container.removeChild(container.firstChild);
-        }
+    {        
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
 
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        let height = 30;
+        
         if(!this.root)
             return;
 
@@ -173,44 +347,35 @@ class RedBlackTree {
         while(q.length > 0)
         {
             let size = q.length;
-            var newLevel = document.createElement("div")
-            newLevel.classList.add("level");
-
-            container.appendChild(newLevel);
-
+            
             for (let i = 0; i < size; i++) 
             {
                 let currNode = q[0];
                 
-                var newDiv = document.createElement("div");
+                ctx.beginPath();
+
+                ctx.arc(canvas.width / 4 + i * 50, height, 20, 0, 2 * Math.PI);
                 
-                newDiv.textContent = currNode.val;
-                if (!currNode.color)
-                    newDiv.style.background = "black"; // Set color for black nodes
-                else
-                    newDiv.style.background = "red"; // Set color for red nodes
-            
-                newDiv.classList.add("node");
-            
-                newLevel.appendChild(newDiv);
+                ctx.fillStyle = currNode.color ? "red" : "black";
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = "black";
+                ctx.stroke();
+
+                ctx.font = "5px";
+                ctx.fillStyle = "white";
+                ctx.fillText(currNode.data, canvas.width / 4 + i * 50 - 5, height + 2);
             
                 if (currNode.left) q.push(currNode.left);
                 if (currNode.right) q.push(currNode.right);
                 q.shift()
             }
-            
+            height += 60;
         }
-    }
-
-    AddOnDoc(node)
-    {
-        var container = document.getElementById("container2");
     }
 
     giveResponse(message)
     {
-        
-
         let output = document.getElementById("response");
         
         output.textContent = message; // Use '=' instead of '()' to set text content
@@ -232,14 +397,14 @@ function Insert() {
     // Check if the input is empty or not a number
     if (inputValue === "" || isNaN(inputValue)) {
         // Display an error message or handle the invalid input
-        console.error("Invalid input. Please enter a valid number.");
+        tree.giveResponse("Invalid input. Please enter a valid number.");
         return;
     }
     
     // Call the Insert function with the input value
     tree.Insert(parseInt(inputValue)); // Convert input value to integer before insertion
 
-    //tree.Print();
+    tree.Print();
 }
 
 
@@ -250,7 +415,7 @@ function Delete() {
     // Call the Delete function with the input value
     tree.Delete(inputValue);
 
-    //tree.Print();
+    tree.Print();
 }
 
 function Find() {
