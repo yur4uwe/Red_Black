@@ -14,8 +14,7 @@ class Node {
 class RedBlackTree {
     constructor() 
     {
-        this.NULLNODE = new Node(0, 0);
-        this.root = this.NULLNODE;
+        this.root = null;
     }
 
     FindHelper(value) {
@@ -251,25 +250,33 @@ class RedBlackTree {
     Insert(key) 
     {
         let node = new Node(key, 1);
-        let y = null;
-        let x = this.root;
+        let parent = null;
+        let currNode = this.root;
 
-        while (x !== this.NULLNODE && x !== null) {
-            y = x;
-            if (node.data < x.data) {
-                x = x.left;
-            } else {
-                x = x.right;
+        while (currNode !== null) {
+            parent = currNode;
+            if (node.data < currNode.data) {
+                currNode = currNode.left;
+            } 
+            else if(node.data > currNode.data){
+                currNode = currNode.right;
+            }
+            else
+            {
+                this.giveResponse("Node already exists");
+                return;
             }
         }
 
-        node.parent = y;
-        if (y === null) {
+        node.parent = parent;
+        if (parent === null) {
             this.root = node;
-        } else if (node.data < y.data) {
-            y.left = node;
-        } else {
-            y.right = node;
+        } 
+        else if (node.data < parent.data) {
+            parent.left = node;
+        } 
+        else {
+            parent.right = node;
         }
 
         if (node.parent === null) {
