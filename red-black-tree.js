@@ -362,7 +362,7 @@ class RedBlackTree {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        let canvasheight = 30;
+        let canvasheight = 30, nodeheight = 0;
         
         if(!this.root)
             return;
@@ -378,25 +378,26 @@ class RedBlackTree {
                 let currNode = q[0][0];
                 let coordX = q[0][1], coordY = q[0][2];
                 
-                let leftsonX = coordX - 30,
-                    rightSonX = coordX + 30;
+                let diff = 25 * Math.pow(2, this.height - nodeheight - 2),
+                    leftsonX = coordX - diff,
+                    rightSonX = coordX + diff;
 
                 if (currNode.left)
                 { 
-                    q.push([currNode.left, leftsonX, canvasheight + 60]);
+                    q.push([currNode.left, leftsonX, canvasheight + 50]);
                     ctx.beginPath();
                     ctx.moveTo(coordX, coordY);
-                    ctx.lineTo(leftsonX, canvasheight + 60);
+                    ctx.lineTo(leftsonX, canvasheight + 50);
                     ctx.lineWidth = 2;
                     ctx.lineCap = "round";
                     ctx.stroke();
                 }
                 if (currNode.right)
                 { 
-                    q.push([currNode.right, rightSonX, canvasheight + 60]);
+                    q.push([currNode.right, rightSonX, canvasheight + 50]);
                     ctx.beginPath();
                     ctx.moveTo(coordX, coordY);
-                    ctx.lineTo(rightSonX, canvasheight + 60);
+                    ctx.lineTo(rightSonX, canvasheight + 50);
                     ctx.lineWidth = 2;
                     ctx.lineCap = "round";
                     ctx.stroke();
@@ -417,7 +418,8 @@ class RedBlackTree {
                 ctx.fillStyle = "white";
                 ctx.fillText(currNode.data, coordX - 5, coordY + 2);
             }
-            canvasheight += 60;
+            canvasheight += 50;
+            nodeheight++;
         }
     }
 
