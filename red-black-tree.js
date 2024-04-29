@@ -15,27 +15,37 @@ class RedBlackTree {
     constructor() 
     {
         this.root = null;
+        this.height = 0;
+    }
+
+    checkHeight(node, height)
+    {
+        if(!node)
+        {
+            return height;
+        }
+
+        return Math.max(this.checkHeight(node.left, height + 1),
+                        this.checkHeight(node.right, height + 1));
     }
 
     FindHelper(value) {
         let currNode = this.root;
-
-        while (currNode && currNode.val !== value) {
-            if (currNode.val < value) {
-                currNode = currNode.left;
-            } else if (currNode.val > value) {
+    
+        while (currNode !== null && currNode.data !== value) {
+            if (currNode.data < value) {
                 currNode = currNode.right;
             } else {
-                return currNode;
+                currNode = currNode.left;
             }
         }
-
+    
         return currNode;
     }
 
     Find(value)
     {
-        if(this.FindHelper(value))
+        if(this.FindHelper(value) !== null)
             return this.giveResponse(`Node with value ${value} found`);
         else
             return this.giveResponse(`Node with value ${value} not found`);
@@ -86,19 +96,18 @@ class RedBlackTree {
         x.parent = y;
     }   
 
-    rbTransplant(u, v) 
-    {
+    rbTransplant(u, v) {
         if (u.parent === null) {
             this.root = v;
-        } 
-        else if (u === u.parent.left) {
+        } else if (u === u.parent.left) {
             u.parent.left = v;
-        } 
-        else {
+        } else {
             u.parent.right = v;
         }
-        v.parent = u.parent;
-    }
+        if (v !== null) {
+            v.parent = u.parent; // Update the parent of the replacement node
+        }
+    } 
 
     Delete(key) 
     {
@@ -106,19 +115,24 @@ class RedBlackTree {
         let x, y;
         let node = this.root;
 
+        
+
         while (node !== null) 
         {
             if (node.data === key) {
                 z = node;
+                break;
             }
 
-            if (node.data <= key) {
+            if (node.data < key) {
                 node = node.right;
             } 
-            else {
+            else if(node.data > key){
                 node = node.left;
             }
         }
+        
+        
 
         if (z === null) 
         {
@@ -163,6 +177,8 @@ class RedBlackTree {
         if (y_original_color === 0) {
             this.deleteFix(x);
         }
+
+        this.height = this.checkHeight(this.root, 0);
     }
 
     minimum(node) {
@@ -289,6 +305,8 @@ class RedBlackTree {
         }
 
         this.insertFix(node);
+
+        this.height = this.checkHeight(this.root, 0);
     }
 
     insertFix(k) {
@@ -344,12 +362,12 @@ class RedBlackTree {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        let height = 30;
+        let canvasheight = 30;
         
         if(!this.root)
             return;
 
-        let q = [this.root];
+        let q = [[this.root, canvas.width / 4, canvasheight]];
 
         while(q.length > 0)
         {
@@ -357,11 +375,37 @@ class RedBlackTree {
             
             for (let i = 0; i < size; i++) 
             {
-                let currNode = q[0];
+                let currNode = q[0][0];
+                let coordX = q[0][1], coordY = q[0][2];
                 
+                let leftsonX = coordX - 30,
+                    rightSonX = coordX + 30;
+
+                if (currNode.left)
+                { 
+                    q.push([currNode.left, leftsonX, canvasheight + 60]);
+                    ctx.beginPath();
+                    ctx.moveTo(coordX, coordY);
+                    ctx.lineTo(leftsonX, canvasheight + 60);
+                    ctx.lineWidth = 2;
+                    ctx.lineCap = "round";
+                    ctx.stroke();
+                }
+                if (currNode.right)
+                { 
+                    q.push([currNode.right, rightSonX, canvasheight + 60]);
+                    ctx.beginPath();
+                    ctx.moveTo(coordX, coordY);
+                    ctx.lineTo(rightSonX, canvasheight + 60);
+                    ctx.lineWidth = 2;
+                    ctx.lineCap = "round";
+                    ctx.stroke();
+                }
+                q.shift();
+
                 ctx.beginPath();
 
-                ctx.arc(canvas.width / 4 + i * 50, height, 20, 0, 2 * Math.PI);
+                ctx.arc(coordX, coordY, 20, 0, 2 * Math.PI);
                 
                 ctx.fillStyle = currNode.color ? "red" : "black";
                 ctx.fill();
@@ -371,13 +415,9 @@ class RedBlackTree {
 
                 ctx.font = "5px";
                 ctx.fillStyle = "white";
-                ctx.fillText(currNode.data, canvas.width / 4 + i * 50 - 5, height + 2);
-            
-                if (currNode.left) q.push(currNode.left);
-                if (currNode.right) q.push(currNode.right);
-                q.shift()
+                ctx.fillText(currNode.data, coordX - 5, coordY + 2);
             }
-            height += 60;
+            canvasheight += 60;
         }
     }
 
@@ -386,6 +426,8 @@ class RedBlackTree {
         let output = document.getElementById("response");
         
         output.textContent = message; // Use '=' instead of '()' to set text content
+        
+        clearTimeout();
         
         setTimeout(() => {
             output.textContent = ""; // Reset text content after 3000 milliseconds
@@ -397,32 +439,48 @@ let tree = new RedBlackTree();
 
 function Insert() 
 {
-    let inputValue = document.getElementById("ins-inp").value;
+    let input = document.getElementById("ins-inp");
 
-    if (inputValue === "" || isNaN(inputValue)) {
+    if (input.value === "" || isNaN(input.value)) {
         tree.giveResponse("Invalid input. Please enter a valid number.");
         return;
     }
     
-    tree.Insert(parseInt(inputValue));
+    tree.Insert(parseInt(input.value));
+
+    input.textContent = "";
 
     tree.Print();
 }
 
 
-function Delete() 
-{
-    let inputValue = document.getElementById("del-inp").value;
+function Delete() {
+    let input = document.getElementById("del-inp");
 
-    tree.Delete(inputValue);
+    if (input.value === "" || isNaN(input.value)) {
+        tree.giveResponse("Invalid input. Please enter a valid number.");
+        return;
+    }
+
+    // Parse input value as an integer before passing it to Delete method
+    tree.Delete(parseInt(input.value));
+
+    input.textContent = "";
 
     tree.Print();
 }
+
 
 function Find() 
 {
-    let inputValue = document.getElementById("find-inp").value;
-    
-    tree.Find(inputValue);
-}
+    let input = document.getElementById("find-inp");
 
+    if (input.value === "" || isNaN(input.value)) {
+        tree.giveResponse("Invalid input. Please enter a valid number.");
+        return;
+    }
+    
+    tree.Find(parseInt(input.value));
+
+    input.textContent = "";
+}
