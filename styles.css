@@ -1,7 +1,40 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.header {
+    width: 100%;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    font: bold;
+    z-index: 10;
+    height: 30px;
+    text-align: center;
 }
 
+body {
+    padding-top: 60px; /* Add padding to the top of the body to create space for the fixed header */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: rgb(146, 0, 0);
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 120%;
+    height: 140%;
+    background-color: rgb(36, 36, 36);
+    transform: rotate(-60deg);
+    z-index: -1; /* Ensure the pseudo-element is behind other content */
+}
+
+/*.backgrdiv2{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 100%;
+    height: 150%;
+    background-color: rgb(109, 3, 3);
+    transform: rotate(-60deg);
+}*/
 
 #container1 {
     display: flex;
@@ -14,6 +47,7 @@ body {
     border-radius: 16px;
     height: 50px;
     overflow: hidden;
+    background-color: white;
 }
 
 .btn {
@@ -111,19 +145,6 @@ body {
 #container {
     position: relative;
 }
-  
-.box {
-    width: 100px;
-    height: 100px;
-    background-color: lightblue;
-    margin: 20px;
-}
-  
-#line {
-    position: absolute;
-    border: 2px solid red;
-    z-index: 10;
-}
  
 canvas{
     width: 100%;
@@ -131,4 +152,6 @@ canvas{
     border: 1px solid black;
     border-radius: 13px;
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    z-index: 2;
 }

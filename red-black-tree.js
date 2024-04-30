@@ -1,5 +1,8 @@
-const RED = true;
-const BLACK = false;
+const ERROR = 0; 
+const WARNING = 1;
+const SUCCESS = 2;
+
+const msgType = ['red', 'orange', 'green'];
 
 class Node {
     constructor(data, color) {
@@ -46,9 +49,9 @@ class RedBlackTree {
     Find(value)
     {
         if(this.FindHelper(value) !== null)
-            return this.giveResponse(`Node with value ${value} found`);
+            return this.giveResponse(`Node with value ${value} found`, SUCCESS);
         else
-            return this.giveResponse(`Node with value ${value} not found`);
+            return this.giveResponse(`Node with value ${value} not found`, ERROR);
     }
 
     leftRotate(node) 
@@ -136,7 +139,7 @@ class RedBlackTree {
 
         if (z === null) 
         {
-            this.giveResponse("Key not found in the tree");
+            this.giveResponse("Key not found in the tree", ERROR);
             return;
         }
 
@@ -279,7 +282,7 @@ class RedBlackTree {
             }
             else
             {
-                this.giveResponse("Node already exists");
+                this.giveResponse("Node already exists", ERROR);
                 return;
             }
         }
@@ -423,16 +426,16 @@ class RedBlackTree {
         }
     }
 
-    giveResponse(message)
-    {
+    giveResponse(message, type) {
         let output = document.getElementById("response");
         
-        output.textContent = message; // Use '=' instead of '()' to set text content
-        
-        clearTimeout();
+        output.textContent = message;
+        output.style.color = msgType[type]; // Set text color based on message type
         
         setTimeout(() => {
-            output.textContent = ""; // Reset text content after 3000 milliseconds
+            output.textContent = "";
+            output.style.color = ""; // Reset text color
+            output.style.backgroundColor = ""; // Reset background color
         }, 3000);
     }
 }
@@ -444,11 +447,15 @@ function Insert()
     let input = document.getElementById("ins-inp");
 
     if (input.value === "" || isNaN(input.value)) {
-        tree.giveResponse("Invalid input. Please enter a valid number.");
+        tree.giveResponse("Invalid input. Please enter a valid number.", WARNING);
         return;
     }
     
     tree.Insert(parseInt(input.value));
+
+    input.value = '';
+
+    inputBlur('ins-inp');
 
     tree.Print();
 }
@@ -458,12 +465,16 @@ function Delete() {
     let input = document.getElementById("del-inp");
 
     if (input.value === "" || isNaN(input.value)) {
-        tree.giveResponse("Invalid input. Please enter a valid number.");
+        tree.giveResponse("Invalid input. Please enter a valid number.", WARNING);
         return;
     }
 
     // Parse input value as an integer before passing it to Delete method
     tree.Delete(parseInt(input.value));
+
+    input.value = '';
+
+    inputBlur('del-inp');
 
     tree.Print();
 }
@@ -474,9 +485,32 @@ function Find()
     let input = document.getElementById("find-inp");
 
     if (input.value === "" || isNaN(input.value)) {
-        tree.giveResponse("Invalid input. Please enter a valid number.");
+        tree.giveResponse("Invalid input. Please enter a valid number.", WARNING);
         return;
     }
     
     tree.Find(parseInt(input.value));
+
+    inputBlur('find-inp');
+
+    input.value = '';
+}
+
+function inputFocus(inputId) 
+{
+        var field = document.querySelector('[for="' + inputId + '"]').closest('.float-label-field');
+        field.classList.add('input-focused');
+
+        var input = document.getElementById(inputId);
+}
+    
+function inputBlur(inputId) 
+{
+        var input = document.getElementById(inputId);
+
+        if(input.value === '')
+        {
+                var field = document.querySelector('[for="' + inputId + '"]').closest('.float-label-field');
+                field.classList.remove('input-focused');
+        }
 }
