@@ -10,21 +10,45 @@
     <h1>Red-Black Trees</h1>
 
     <div id="container1">
-        <input id="ins-inp" type="text" class="inp">
-        <button class="btn" onclick="Insert()">Insert</button>
+        <fieldset class='float-label-field'>
+            <label for="ins-inp">Enter</label>
+            <input id="ins-inp" class="inp" type='text' placeholder="" onfocus="inputFocus('ins-inp')" onblur="inputBlur('ins-inp')">
+        </fieldset>
+                
+        
+        <button class="btn" onclick="Insert()">
+            <span>Insert</span>
+            <div class="wave first-wave"></div>
+            <div class="wave second-wave"></div>
+        </button>
 
-        <input id="del-inp" type="text" class="inp">
-        <button class="btn" onclick="Delete()">Delete</button>
+        <fieldset class='float-label-field'>
+            <label for="del-inp">Enter</label>
+            <input id="del-inp" class="inp" type='text' placeholder="" onfocus="inputFocus('del-inp')" onblur="inputBlur('del-inp')">
+        </fieldset>
 
-        <input id="find-inp" type="text" class="inp">
-        <button class="btn" onclick="Find()">Find</button>
+        <button class="btn" onclick="Delete()">
+            <span>Delete</span>
+            <div class="wave first-wave"></div>
+            <div class="wave second-wave"></div>
+        </button>
+
+        <fieldset class='float-label-field'>
+            <label for="find-inp">Enter</label>
+            <input id="find-inp" class="inp" type='text' placeholder="" onfocus="inputFocus('find-inp')" onblur="inputBlur('find-inp')">
+        </fieldset>
+
+        <button class="btn" onclick="Find()">
+            <span>Find</span>
+            <div class="wave first-wave"></div>
+            <div class="wave second-wave"></div>
+        </button>
 
         <p id="response"></p>
     </div>
     
 
     <canvas id="canvas"></canvas>
-
 
     <script src="script.js"></script>
     <script src="red-black-tree.js"></script>

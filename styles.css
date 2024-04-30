@@ -2,48 +2,6 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.node {
-    width: 50px;
-    height: 50px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid black;
-    border-radius: 50%;
-    background-color: red;
-    color: white;
-    transition: width 0.3s ease, height 0.3s ease;
-    margin: 3px;
-}
-
-.node:hover {
-    width: 70px;
-    height: 70px;
-    
-}
-
-.level {
-    width: calc(100% - 6px); /* Subtract twice the margin from the container width */
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 3px;
-    /*background-color: chartreuse;
-    border: 3px solid black;*/
-    position: relative;
-}
-
-#container2 {
-    position: relative;
-    width: 100%;
-    min-height: 30px;
-    margin: 3px;
-    border: 1px solid black;
-    border-radius: 16px;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); /* Apply inner shadow */
-}
 
 #container1 {
     display: flex;
@@ -54,27 +12,100 @@ body {
     margin: 3px;
     border: 1px solid black;
     border-radius: 16px;
+    height: 50px;
+    overflow: hidden;
 }
 
-.btn{
-    height: 40px; /* calc(100% - 6px);*/
-    width: 60px; /*calc(100% - 6px);*/
+.btn {
+    position: relative;
+    height: 40px;
+    width: 60px;
     margin: 3px;
     border-radius: 13px;
     border: 1px solid black;
+    overflow: hidden;
+    transition: width 0.3s ease, height 0.3s ease;
+    display: inline-block;
 }
 
-.btn:hover{
-    background-color: rgb(197, 197, 197);
+.btn span {
+    position: relative;
+    z-index: 3;
 }
 
-.inp{
-    height: 30px;
+.btn:hover {
+    color: white;
+}
+
+
+.wave {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 100%;
+    height: 100%;
+    transform-origin: center;
+    transition: all .5s;
+}
+
+.first-wave {
+    background: red;
+    transform: rotate(-60deg) scale(0);
+}
+
+.second-wave {
+    background: black;
+    transform: rotate(-60deg) scale(0);
+    z-index: 2;
+}
+
+.btn:hover .first-wave {
+    transform: rotate(-60deg) scale(4);
+}
+
+.btn:hover .second-wave {
+    transform: rotate(-60deg) scale(2);
+}
+
+.float-label-field {
+    position: relative;
+    border: none;
+    outline: none;
+}
+
+.float-label-field input {
     width: 70px;
-    border: 1px solid black;
-    border-radius: 13px;
-    font-size: 20px;
-    margin-left: 3px;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    border-bottom: solid 1px #efefef;
+    padding: 5px;
+    box-sizing: border-box;
+    transition: border-bottom-color 0.2s ease;
+}
+
+.float-label-field label {
+    opacity: 0.5;
+    position: absolute;
+    top: 50%; /* Adjusted top position to center label vertically */
+    left: 15px;
+    transform: translateY(-50%); /* Center label vertically */
+    transition: all 0.2s ease;
+    font-size: 18px;
+    pointer-events: none; /* Prevent label from receiving pointer events */
+}
+
+.float-label-field input:focus + label,
+.float-label-field input:not(:placeholder-shown) + label,
+.float-label-field.input-focused label {
+    top: 5px;
+    font-size: 10px;
+    opacity: 1;
+    color: red;
+}
+
+.float-label-field input:focus {
+    border-bottom-color: red;
 }
 
 #container {
@@ -98,4 +129,6 @@ canvas{
     width: 100%;
     height: 400px;
     border: 1px solid black;
+    border-radius: 13px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
 }

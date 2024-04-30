@@ -9,24 +9,23 @@ canvas.height = 400 * scaleFactor;
 // Scale the context to match the device's pixel ratio
 ctx.scale(scaleFactor, scaleFactor);
 
-// Draw on the canvas
-/*ctx.beginPath();
-ctx.moveTo(0, 0);
-ctx.lineTo(50, 50);
-ctx.lineWidth = 2;
-ctx.lineCap = "round";
-ctx.stroke();
+function inputFocus(inputId) {
+        var field = document.querySelector('[for="' + inputId + '"]').closest('.float-label-field');
+        field.classList.add('input-focused');
 
-ctx.beginPath();
-ctx.arc(95, 50, 20, 0, 2 * Math.PI);
-ctx.fillStyle = "red";
-ctx.fill();
-ctx.lineWidth = 2;
-ctx.strokeStyle = "black";
-ctx.stroke();*/
+        var input = document.getElementById(inputId);
+        input.value = ''; 
+}
+    
+function inputBlur(inputId) {
+        var field = document.querySelector('[for="' + inputId + '"]').closest('.float-label-field');
+        field.classList.remove('input-focused');
 
-//ctx.beginPath();
-//ctx.moveTo(canvas.height / 2, 0);
-//ctx.lineTo(canvas.height / 2, 100);
-//ctx.lineWidth = 2;
-//ctx.stroke();
+        var input = document.getElementById(inputId);
+        
+        input.value = ''; // If input is empty, restore the placeholder text
+        
+}
+
+    
+    

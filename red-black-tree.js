@@ -450,8 +450,6 @@ function Insert()
     
     tree.Insert(parseInt(input.value));
 
-    input.textContent = "";
-
     tree.Print();
 }
 
@@ -467,8 +465,6 @@ function Delete() {
     // Parse input value as an integer before passing it to Delete method
     tree.Delete(parseInt(input.value));
 
-    input.textContent = "";
-
     tree.Print();
 }
 
@@ -483,6 +479,4 @@ function Find()
     }
     
     tree.Find(parseInt(input.value));
-
-    input.textContent = "";
 }
