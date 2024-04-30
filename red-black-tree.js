@@ -381,7 +381,7 @@ class RedBlackTree {
                 let currNode = q[0][0];
                 let coordX = q[0][1], coordY = q[0][2];
                 
-                let diff = 25 * Math.pow(2, this.height - nodeheight - 2),
+                let diff = 15 * Math.pow(2, this.height - nodeheight - 2),
                     leftsonX = coordX - diff,
                     rightSonX = coordX + diff;
 
@@ -409,7 +409,7 @@ class RedBlackTree {
 
                 ctx.beginPath();
 
-                ctx.arc(coordX, coordY, 20, 0, 2 * Math.PI);
+                ctx.arc(coordX, coordY, 15, 0, 2 * Math.PI);
                 
                 ctx.fillStyle = currNode.color ? "red" : "black";
                 ctx.fill();

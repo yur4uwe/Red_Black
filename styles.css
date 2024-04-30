@@ -1,15 +1,14 @@
 .header {
     width: 100%;
     color: rgb(255, 255, 255);
-    font-size: 20px;
+    font-size: 30px;
     font: bold;
     z-index: 10;
-    height: 30px;
+    height: 39px;
     text-align: center;
 }
 
 body {
-    padding-top: 60px; /* Add padding to the top of the body to create space for the fixed header */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: rgb(146, 0, 0);
 }
