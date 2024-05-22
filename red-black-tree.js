@@ -1,3 +1,14 @@
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const scaleFactor = window.devicePixelRatio;
+canvas.width = canvas.offsetWidth * scaleFactor;
+canvas.height = 400 * scaleFactor;
+
+ctx.scale(scaleFactor, scaleFactor);
+
+
+
 const ERROR = 0; 
 const WARNING = 1;
 const SUCCESS = 2;
